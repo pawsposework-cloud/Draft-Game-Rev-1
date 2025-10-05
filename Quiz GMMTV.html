@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tebak Aktor/Aktris GMMTV</title>
+  <style>
+    body {
+      font-family: Verdana, Geneva, Tahoma, sans-serif
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .quiz-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+    button {
+      margin: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Loading...</h2>
+    <div id="options"></div>
+    <div id="result"></div>
+    <button id="nextBtn" style="display:none;">Next</button>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Siapakah aktor GMMTV yang dikenal sebagai Sarawat di '2gether The Series'?",
+        options: ["Bright Vachirawit", "Win Metawin", "Tay Tawan", "Off Jumpol"],
+        answer: "Bright Vachirawit"
+      },
+      {
+        question: "Siapa aktris GMMTV yang berperan sebagai Ink di 'Bad Buddy The Series'?",
+        options: ["Tu Tontawan", "Nanon Korapat", "Winny Thanawin", "Milk Pansa"],
+        answer: "Milk Pansa"
+      },
+      {
+        question: "Siapakah pasangan populer GMMTV yang dikenal dengan nama 'JoongDunk'?",
+        options: ["First & Khaotung", "Force & Book", "Joong & Dunk", "Jimmy & Sea"],
+        answer: "Joong & Dunk"
+      }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const resultEl = document.getElementById("result");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function loadQuestion() {
+      resultEl.textContent = "";
+      nextBtn.style.display = "none";
+
+      const q = quizData[currentQ];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, q.answer);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected, correct) {
+      if (selected === correct) {
+        resultEl.textContent = "🎉 Benar!";
+        score++;
+      } else {
+        resultEl.textContent = `❌ Salah! Jawaban: ${correct}`;
+      }
+      nextBtn.style.display = "block";
+    }
+
+    nextBtn.onclick = () => {
+      currentQ++;
+      if (currentQ < quizData.length) {
+        loadQuestion();
+      } else {
+        questionEl.textContent = "Game selesai!";
+        optionsEl.innerHTML = "";
+        resultEl.textContent = `Skor akhir: ${score}/${quizData.length}`;
+        nextBtn.style.display = "none";
+      }
+    };
+
+    loadQuestion();
+  </script>
+</body>
+</html>
